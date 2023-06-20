@@ -1,0 +1,193 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block search %}
+<form role="search" class="sr-input-func">
+    <input type="text" onkeyup="c_search()" id="search" placeholder="Recherche..." class="search-int form-control">
+    <a href="#"><i class="fa fa-search"></i></a>
+</form>
+<script type="text/javascript">
+    function c_search(){
+        var value = $("#search").val().toLowerCase();
+        $(".filter").filter(function() {
+            $(this).parent().parent().parent().toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="contacts-area mg-b-15">
+    <div class="container-fluid">
+        <div class="row text-right" style="padding-right: 40px;">
+            <a class="Warning Warning-color btn btn-success mg-b-10" href="#" data-toggle="modal" data-target="#WarningModalftblack"><i class="fa fa-plus edu-checked-pro" aria-hidden="true"></i> Nouveau affectation</a>
+        </div>
+        <div class="row">
+            {% for affecter in affecters %}
+            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                <div class="hpanel hblue contact-panel contact-panel-cs responsive-mg-b-30">
+                    <div  id="filter" class="panel-body custom-panel-jw">
+                        <div class="social-media-in">
+                            <a href="#" data-toggle="modal" onclick="update_affecter('{{affecter.id_affecter }}', '{{affecter.employe.id_employe}}', '{{affecter.lieu.id_lieu}}', '{{affecter.date}}')" data-target="#PrimaryModalftblack"><i class="fa fa-edit"></i></a>
+                            <a href="#" data-toggle="modal" onclick="delete_affecter('{{affecter.id_affecter}}')" data-target="#DangerModalalert"><i class="fa fa-trash-o"></i></a>
+                        </div>
+                        <img alt="logo" class="img-circle m-b" width="100px" height="100px" src="{% static 'images/affectation.jpg' %}">
+                        <h3 style="height: 30px" class="filter"><b>{{affecter.employe.nom}} {{affecter.employe.prenom}}</b></h3>
+                        <p class="text-success">{{affecter.lieu.designation}}-<em>{{affecter.lieu.province}}</em></p>
+                        <h5 class="text-success">{{affecter.date}}</h5>
+                    </div>
+                    <div class="panel-footer contact-footer">
+                        <div class="professor-stds-int">
+                            <div class="professor-stds">
+                                <div class="contact-stat" style="height: 30px">
+                                    <span>POSTE: </span> <strong>{{affecter.employe.poste}}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- MODAL ADD -->
+<div id="WarningModalftblack" btn btn-success class="modal modal-edu-general Customwidth-popup-WarningModal PrimaryModal-bgcolor fade" role="dialog">
+    <div class="modal-dialog">
+        <form action="{% url 'add_affecter' %}" method="POST" class="modal-content">
+            {% csrf_token %}
+            <div class="modal-close-area modal-close-df">
+                <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+            </div>
+            <div class="modal-body">
+                <span class="educate-icon educate-professor modal-check-pro information-icon-pro"></span>
+                <h2>Nouveau employe</h2>
+                <div>
+                    <div class="input-mark-inner">
+                        <select name="employe" class="form-control">
+                            <option value="">Choisir un employee</option>
+                            {% for employe in employes %}
+                            <option value="{{ employe.id_employe }}">{{ employe.codeemp }}-{{employe.nom}} {{employe.prenom}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group-inner">
+                        <select name="lieu" class="form-control" required>
+                            <option value="">Choisir un employee</option>
+                            {% for lieu in lieux %}
+                            <option value="{{ lieu.id_lieu }}">{{ lieu.codelieu }}-{{lieu.designation}} {{lieu.province}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group-inner">
+                        <input type="date"  name="date" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer footer-modal-admin warning-md row">
+                <div class="col-md-2">
+                    
+                </div>
+                <div class="col-md-8">
+                    <button type="submit" class="form-control btn btn-primary">Enregistrer</button>
+                </div>
+                <div class="col-md-2">
+                    
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL EDIT -->
+<div id="PrimaryModalftblack" class="modal modal-edu-general default-popup-PrimaryModal PrimaryModal-bgcolor fade" role="dialog">
+    <div class="modal-dialog">
+        <form id="link_update" action="#" method="POST" class="modal-content">
+            {% csrf_token %}
+            <div class="modal-close-area modal-close-df">
+                <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+            </div>
+            <div class="modal-body">
+                <i class="educate-icon educate-event modal-check-pro"></i>
+                <div>
+                    <div class="input-mark-inner">
+                        <select name="up_id_employe" id="up_id_employe" class="form-control">
+                            <option value="">Choisir un employee</option>
+                            {% for employe in employes %}
+                            <option value="{{ employe.id_employe }}">{{ employe.codeemp }}-{{employe.nom}} {{employe.prenom}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group-inner">
+                        <select name="up_id_lieu"  id="up_id_lieu" class="form-control" required>
+                            <option value="">Choisir un employee</option>
+                            {% for lieu in lieux %}
+                            <option value="{{ lieu.id_lieu }}">{{ lieu.codelieu }}-{{lieu.designation}} {{lieu.province}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group-inner">
+                        <input type="date" id="up_date" name="up_date" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer footer-modal-admin">
+                <div class="col-md-2">
+                    
+                </div>
+                <div class="col-md-8">
+                    <button type="submit" class="form-control btn btn-primary">Enregistrer</button>
+                </div>
+                <div class="col-md-2">
+                    
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL DELETE -->
+<div id="DangerModalalert" class="modal modal-edu-general FullColor-popup-DangerModal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-close-area modal-close-df">
+                <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+            </div>
+            <div class="modal-body">
+                <span class="educate-icon educate-danger modal-check-pro information-icon-pro"></span>
+                <h2>Suppression</h2>
+                <p>Etes-vous sur de vouloir supprimer cette affectation definitivement ? 
+                    <br>Attention, L'operation est irreversible et l'administration peux voir cette action.
+                    <br> Cliquer sur confirmer pour executer la suppression.
+                </p>
+            </div>
+            <div class="modal-footer danger-md">
+                <div class="col-md-2">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a id="link_delete" class="form-control text-center" href="#">Confirmer</a>
+                </div>
+                <div class="col-md-2">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function update_affecter(id_a, id_e, id_l, date){
+        $("#up_id_employe").val(id_e)
+        $("#up_id_lieu").val(id_l)
+        var d = new Date(date).toISOString().split('T')[0];
+        $("#up_date").val(d)
+        $("#link_update").attr("action", '/bda/gestion_affectation/update_affectations/'+ id_a +"/")
+    }
+
+    function delete_affecter(id_a) {
+        $("#link_delete").attr("href", "/bda/gestion_affectation/delete_affectations/"+ id_a +"/")
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends '../main/base-admin.html' %}
+{% load static %}
+{% block content %}
+		<div class="product-status mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-status-wrap">
+                            <h4>AUDIT {{title}}</h4>
+                            <div class="asset-inner">
+                                <table>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Date</th>
+                                        <th>Type d'action</th>
+                                        <th>Ancienne employee</th>
+                                        <th>Ancien lieu</th>
+                                        <th>Ancienne date</th>
+                                        <th>Nouvelle employee</th>
+                                        <th>Nouveau lieu</th>
+                                        <th>Nouveau date</th>
+                                        <th>User</th>
+                                    </tr>
+                                    {% for audit in audits %}
+                                    <tr>
+                                        <td>{{audit.id_ar}}</td>
+                                        <td>{{audit.date_suivi}}</td>
+                                        <td>
+                                            <button class="pd-setting"
+                                            {% if audit.type_action == 'AJOUT'%}
+                                            style="background-color: #5cb85c; border-color: #4cae4c; width: 150px;" 
+                                            {% elif audit.type_action == 'MODIFICATION'%}
+                                            style="width: 150px;" 
+                                            {% elif audit.type_action == 'SUPPRESSION'%}
+                                            style="background-color: #d9534f; border-color: #d43f3a; width: 150px;"
+                                            {% else %} 
+                                            style="background-color: #fff; border-color: #ccc; width: 150px;" 
+                                            {% endif %}>{{audit.type_action}}</button>
+                                        </td>
+                                        <td>{{audit.old_id_employe}}</td>
+                                        <td>{{audit.old_id_lieu}}</td>
+                                        <td>{{audit.old_date}}</td>
+                                        <td>{{audit.id_employe}}</td>
+                                        <td>{{audit.id_lieu}}</td>
+                                        <td>{{audit.date}}</td>
+                                        <td>{{audit.utilisateur}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
