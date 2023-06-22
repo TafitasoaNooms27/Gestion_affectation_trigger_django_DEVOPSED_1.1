@@ -10,8 +10,8 @@ from django.db import models
 
 class Affecter(models.Model):
     id_affecter = models.AutoField(primary_key=True)
-    employe = models.ForeignKey('Employe', models.DO_NOTHING)
-    lieu = models.ForeignKey('Lieu', models.DO_NOTHING)
+    employe = models.ForeignKey('Employe', models.DO_NOTHING, null=True )
+    lieu = models.ForeignKey('Lieu', models.DO_NOTHING , null=True)
     date = models.CharField(max_length=10)
 
     class Meta:

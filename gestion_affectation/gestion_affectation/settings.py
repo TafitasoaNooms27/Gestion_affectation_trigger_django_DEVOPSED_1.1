@@ -98,7 +98,7 @@ DATABASES = {
         'PASSWORD': 'NoMeNa##0327',
         'HOST': 'affectationemploye.c4wzbtdip4gt.eu-west-3.rds.amazonaws.com',
         'PORT': '3306',
-        'OPTION': {'init_command':"SET sql_mode='STRICT_TRANS_TABLE',"},
+        'OPTION': {'init_command':"SET sql_mode='STRICT_STRICT_TABLES',"},
     }
 }
 
