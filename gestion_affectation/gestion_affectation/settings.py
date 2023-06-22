@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-+df47bwtv0me&f8efcm+$o#si(8w4y9n(2*r(_&+k2_cx==p9l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [ ]
 
 
 # Application definition
@@ -98,6 +98,7 @@ DATABASES = {
         'PASSWORD': 'NoMeNa##0327',
         'HOST': 'affectationemploye.c4wzbtdip4gt.eu-west-3.rds.amazonaws.com',
         'PORT': '3306',
+        'OPTION': {'init_command':"SET sql_mode='STRICT_TRANS_TABLE',"},
     }
 }
 
